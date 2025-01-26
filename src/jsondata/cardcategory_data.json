@@ -1,0 +1,28 @@
+{
+  "category_list": [
+    {
+      "name": "LifeTime Free",
+      "icon": "fa-credit-card"
+    },
+    {
+      "name": "Cashback",
+      "icon": "fa-money"
+    },
+    {
+      "name": "Travel",
+      "icon": "fa-plane"
+    },
+    {
+      "name": "Fuel",
+      "icon": "fa-car"
+    },
+    {
+      "name": "Shopping",
+      "icon": "fa-shopping-cart"
+    },
+    {
+      "name": "Rewards",
+      "icon": "fa-trophy"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "card_network": [
+    {
+      "name": "Rupay"
+    },
+    {
+      "name": "MasterCard"
+    },
+    {
+      "name": "Visa"
+    }
+  ],
+  "bank_list": [
+    {
+      "name": "HDFC Bank",
+      "imageSource": "/banklogo/hdfcbank.jpg",
+      "cardIssued": "20.1 million cards"
+    },
+    {
+      "name": "SBI Bank",
+      "imageSource": "/banklogo/sbibank.png",
+      "cardIssued": "18.6 million cards"
+    },
+    {
+      "name": "ICICI Bank",
+      "imageSource": "/banklogo/icicibank.webp",
+      "cardIssued": "16.8 million cards"
+    },
+    {
+      "name": "Axis Bank",
+      "imageSource": "/banklogo/axisbank.png",
+      "cardIssued": "13.75 million cards"
+    },
+    {
+      "name": "Kotak Mahindra Bank",
+      "imageSource": "/banklogo/kotakbank.jpg",
+      "cardIssued": "8-9 million cards"
+    },
+    {
+      "name": "American Express",
+      "imageSource": "/banklogo/amexbank.png",
+      "cardIssued": "6-7 million cards"
+    },
+    {
+      "name": "RBL Bank",
+      "imageSource": "/banklogo/rblbank.png",
+      "cardIssued": "4-5 million cards"
+    },
+    {
+      "name": "IndusInd Bank",
+      "imageSource": "/banklogo/indusindbank.jpg",
+      "cardIssued": "3-4 million cards"
+    },
+    {
+      "name": "Bank of Baroda",
+      "imageSource": "/banklogo/bobbank.png",
+      "cardIssued": "2-3 million cards"
+    }
+  ]
+}
