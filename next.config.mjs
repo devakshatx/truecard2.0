@@ -5,6 +5,8 @@ const nextConfig = {
     URL: "https://laravel.pixelstrap.net/multikart/api", // Change only the domain part, keeping "/api" intact
     storageURL: "https://laravel.pixelstrap.net/multikart/storage", // Change only the laravel primary domain
     API_PROD_URL: "https://laravel.pixelstrap.net/multikart/api",
+    NEW_API_PROD_URL: "http://localhost:3000/api",
+
   },
   images: {
     remotePatterns: [

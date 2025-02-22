@@ -6,21 +6,45 @@ import { useEffect, useState } from "react";
 import CompareContext from ".";
 
 const CompareProvider = (props) => {
-  const cookieUAT = Cookies.get("uat");
   const [compareState, setCompareState] = useState([]);
   const [openCompareSidebar, setOpenCompareSidebar] = useState(false);
-  const { data: CompareData, isLoading: getCompareLoading, refetch } = useQuery([CompareAPI], () => request({ url: CompareAPI }), { enabled: false, refetchOnWindowFocus: false, select: (res) => res?.data?.data });
-  useEffect(() => {
-    if (cookieUAT) {
-      refetch();
-    }
-  }, [cookieUAT]);
-  useEffect(() => {
-    if (CompareData) {
-      setCompareState([...compareState, ...CompareData]);
-    }
-  }, [getCompareLoading]);
-  return <CompareContext.Provider value={{ ...props,openCompareSidebar,setOpenCompareSidebar, compareState, setCompareState, refetch,CompareData,getCompareLoading }}>{props.children}</CompareContext.Provider>;
+
+  // Add product to compare list
+  const addToCompare = (card_id) => {
+    console.log("compare", compareState, card_id);
+    setCompareState((prev) => {
+      // Avoid duplicate entries
+      if (prev.includes(card_id)) return prev;
+      return [...prev, card_id];
+    });
+  };
+
+  // Remove product from compare list
+  const removeFromCompare = (id) => {
+    setCompareState((prev) => prev.filter((card_id) => card_id !== id));
+  };
+
+  // Clear all compared products
+  const clearCompare = () => {
+    setCompareState([]);
+  };
+
+  return (
+    <CompareContext.Provider
+      value={{
+        ...props,
+        openCompareSidebar,
+        setOpenCompareSidebar,
+        compareState,
+        setCompareState,
+        addToCompare,
+        removeFromCompare,
+        clearCompare,
+      }}
+    >
+      {props.children}
+    </CompareContext.Provider>
+  );
 };
 
 export default CompareProvider;

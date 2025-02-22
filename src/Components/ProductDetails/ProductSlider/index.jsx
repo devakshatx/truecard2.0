@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "reactstrap";
 import CustomerOrderCount from "../Common/CustomerOrderCount";
-import PaymentOptions from "../Common/PaymentOptions";
+import PaymentOptions from "../Common/CategoryTags";
 import ProductBundle from "../Common/ProductBundle";
 import ProductContent from "../Common/ProductContent";
 import ProductDeliveryInformation from "../Common/ProductDeliveryInformation";
@@ -23,8 +23,13 @@ const ProductSlider = ({ productState, setProductState }) => {
 
   return (
     <>
-      <WrapperComponent classes={{ sectionClass: "collection-wrapper ratio_asos product-details-box", fluidClass: "container" }} noRowCol={true}>
-    
+      <WrapperComponent
+        classes={{
+          sectionClass: "collection-wrapper ratio_asos product-details-box",
+          fluidClass: "container",
+        }}
+        noRowCol={true}
+      >
         <SliderImage productState={productState} />
         <Row>
           <Col xxl="9" xl="8" lg="7">
@@ -32,16 +37,31 @@ const ProductSlider = ({ productState, setProductState }) => {
               <div className="col-12 rtl-text">
                 <div className="product-page-details">
                   <CustomerOrderCount productState={productState} />
-                  <ProductContent productState={productState} setProductState={setProductState} />
+                  <ProductContent
+                    productState={productState}
+                    setProductState={setProductState}
+                  />
                   <WishlistCompareShare productState={productState} />
                   <ProductStatus productState={productState} />
                   <ProductInformation productState={productState} />
                   <ProductDeliveryInformation productState={productState} />
                   <PaymentOptions productState={productState} />
-                  {productState?.product?.cross_sell_products?.length > 0 && <ProductBundle productState={productState} setProductState={setProductState} />}
+                  {productState?.product?.cross_sell_products?.length > 0 && (
+                    <ProductBundle
+                      productState={productState}
+                      setProductState={setProductState}
+                    />
+                  )}
                 </div>
               </div>
-              <WrapperComponent classes={{ sectionClass: "tab-product section-b-space product-details-contain m-0 px-0", fluidClass: "container" }} customCol={true}>
+              <WrapperComponent
+                classes={{
+                  sectionClass:
+                    "tab-product section-b-space product-details-contain m-0 px-0",
+                  fluidClass: "container",
+                }}
+                customCol={true}
+              >
                 <ProductDetailsTab productState={productState} />
               </WrapperComponent>
             </Row>

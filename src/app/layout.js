@@ -27,7 +27,7 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }) {
-  const settings = await fetch(`${process.env.API_PROD_URL}/settings`)
+  const settings = await fetch(`${process.env.NEW_API_PROD_URL}/settings`)
     .then((res) => res.json())
     .catch((err) => {
       return err;

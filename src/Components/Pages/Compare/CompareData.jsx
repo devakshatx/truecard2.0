@@ -19,18 +19,27 @@ import { RiCloseLine } from "react-icons/ri";
 const CompareData = () => {
   const { setCompareState, compareState, refetch } = useContext(CompareContext);
   const { convertCurrency } = useContext(SettingContext);
-  const { data, mutate: compareMutate, isLoading: compareLoading } = useDelete(CompareAPI, `/compare`);
+  const {
+    data,
+    mutate: compareMutate,
+    isLoading: compareLoading,
+  } = useDelete(CompareAPI, `/compare`);
+
   useEffect(() => {
     if (data?.status == 200 || data?.status == 201) {
       refetch();
     }
   }, [compareLoading]);
+
   const removeFromCompare = (productObj) => {
     compareMutate(productObj.id);
-    setCompareState((prevState) => prevState.filter((elem) => elem.id !== productObj?.id));
+    setCompareState((prevState) =>
+      prevState.filter((elem) => elem.id !== productObj?.id)
+    );
   };
-  let settings = compareSlider(compareState.length)
-
+  let settings = compareSlider(compareState.length);
+  console.log("compareState", compareState);
+  // const
   return (
     <>
       {compareState?.length > 0 ? (
@@ -38,32 +47,82 @@ const CompareData = () => {
           <Slider {...settings}>
             {compareState?.map((product, i) => (
               <div className="compare-part" key={i}>
-                <Btn color="primary" onClick={() => removeFromCompare(product)} className="close-btn ">
+                <Btn
+                  color="primary"
+                  onClick={() => removeFromCompare(product)}
+                  className="close-btn "
+                >
                   <RiCloseLine />
                 </Btn>
                 <div className="img-section">
-                  <div>{product.product_thumbnail.original_url && <Image src={product.product_thumbnail ? product.product_thumbnail.original_url : placeHolderImage} className="img-fluid" alt={product.name} height={156} width={156} />}</div>
+                  <div>
+                    {product.product_thumbnail.original_url && (
+                      <Image
+                        src={
+                          product.product_thumbnail
+                            ? product.product_thumbnail.original_url
+                            : placeHolderImage
+                        }
+                        className="img-fluid"
+                        alt={product.name}
+                        height={156}
+                        width={156}
+                      />
+                    )}
+                  </div>
                   <Link href={`/product/${product?.slug}`}>
                     <h5 className="text-title">{product?.name}</h5>
                   </Link>
                 </div>
-                <CompareWrapper data={{ title: "Discount", value: product?.discount ? product?.discount : "-" }} />
-                <CompareWrapper data={{ title: "Price", value: convertCurrency(product?.sale_price) }} />
-                <CompareWrapper data={{ title: "Availability", value: ModifyString(product?.stock_status) }} />
+                <CompareWrapper
+                  data={{
+                    title: "Discount",
+                    value: product?.discount ? product?.discount : "-",
+                  }}
+                />
+                <CompareWrapper
+                  data={{
+                    title: "Price",
+                    value: convertCurrency(product?.sale_price),
+                  }}
+                />
+                <CompareWrapper
+                  data={{
+                    title: "Availability",
+                    value: ModifyString(product?.stock_status),
+                  }}
+                />
                 <CompareWrapper data={{ title: "Rating" }}>
                   <div className="compare-rating">
                     <RatingBox totalRating={product?.rating_count || 0} />
-                    <span className="text-content rating-text">{`(${product?.rating_count?.toFixed(2) || 0} Rating)`}</span>
+                    <span className="text-content rating-text">{`(${
+                      product?.rating_count?.toFixed(2) || 0
+                    } Rating)`}</span>
                   </div>
                 </CompareWrapper>
-                <CompareWrapper data={{ title: "Weight", value: product?.weight ? product?.weight : "-" }} />
-                <CompareAction product={product} compareMutate={compareMutate} />
+                <CompareWrapper
+                  data={{
+                    title: "Weight",
+                    value: product?.weight ? product?.weight : "-",
+                  }}
+                />
+                <CompareAction
+                  product={product}
+                  compareMutate={compareMutate}
+                />
               </div>
             ))}
           </Slider>
         </div>
       ) : (
-        <NoDataFound customClass="no-data-added" imageUrl={EmptyImage} title="NoItemsAdded" description="NoCompareItemsAddedDescription" height="230" width="270" />
+        <NoDataFound
+          customClass="no-data-added"
+          imageUrl={EmptyImage}
+          title="NoItemsAdded"
+          description="NoCompareItemsAddedDescription"
+          height="230"
+          width="270"
+        />
       )}
     </>
   );

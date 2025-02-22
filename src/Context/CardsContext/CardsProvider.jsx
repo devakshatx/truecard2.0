@@ -1,16 +1,16 @@
-import request from "@/Utils/AxiosUtils";
+import request, { newRequest } from "@/Utils/AxiosUtils";
 import { ProductAPI, ProductSearchAPI } from "@/Utils/AxiosUtils/API";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ProductContext from ".";
+import CardsContext from ".";
 
-const ProductProvider = (props) => {
+const CardsProvider = (props) => {
   const [customProduct, setCustomProduct] = useState([]);
   const [searchWithCategory, setSearchWithCategory] = useState("");
   const router = useRouter();
   const [totalDealIds, setTotalDealIds] = useState("");
-  const [productAPIData, setProductAPIData] = useState({
+  const [allProducts, setAllProducts] = useState({
     data: [],
     refetchProduct: "",
     params: { ...totalDealIds },
@@ -23,18 +23,18 @@ const ProductProvider = (props) => {
   } = useQuery(
     [ProductAPI],
     () =>
-      request(
+      newRequest(
         {
           url: ProductAPI,
-          params: {
-            ...productAPIData.params,
-            ids: totalDealIds,
-            status: 1,
-            paginate:
-              Object.keys(totalDealIds).length > 5
-                ? Object.keys(totalDealIds).length
-                : 5,
-          },
+          // params: {
+          //   ...allProducts.params,
+          //   ids: totalDealIds,
+          //   status: 1,
+          //   paginate:
+          //     Object.keys(totalDealIds).length > 5
+          //       ? Object.keys(totalDealIds).length
+          //       : 5,
+          // },
         },
         router
       ),
@@ -86,7 +86,8 @@ const ProductProvider = (props) => {
 
   useEffect(() => {
     if (productData) {
-      setProductAPIData((prev) => ({
+      console.log("allProducts datadata", productData);
+      setAllProducts((prev) => ({
         ...prev,
         data: productData,
         productIsLoading: productIsLoading,
@@ -94,13 +95,13 @@ const ProductProvider = (props) => {
     }
   }, [productData]);
   return (
-    <ProductContext.Provider
+    <CardsContext.Provider
       value={{
         ...props,
         searchWithCategory,
         setSearchWithCategory,
-        productAPIData,
-        setProductAPIData,
+        allProducts,
+        setAllProducts,
         customProduct,
         setCustomProduct,
         totalDealIds,
@@ -110,7 +111,7 @@ const ProductProvider = (props) => {
       }}
     >
       {props.children}
-    </ProductContext.Provider>
+    </CardsContext.Provider>
   );
 };
-export default ProductProvider;
+export default CardsProvider;

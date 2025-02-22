@@ -12,8 +12,17 @@ const CompareList = () => {
   if (getCompareLoading) return <Loader />;
   return (
     <>
-      <Breadcrumbs title={"Compare"} subNavigation={[{ name: "Compare" }]} />
-      <WrapperComponent classes={{ sectionClass: "compare-section section-b-space ratio_asos", fluidClass: "container" }} colProps={{ xs: "12" }}>
+      <Breadcrumbs
+        title={"Compare Credit Cards"}
+        subNavigation={[{ name: "Compare" }]}
+      />
+      <WrapperComponent
+        classes={{
+          sectionClass: "compare-section section-b-space ratio_asos",
+          fluidClass: "container",
+        }}
+        colProps={{ xs: "12" }}
+      >
         <CompareData />
       </WrapperComponent>
       <CompareSidebar />

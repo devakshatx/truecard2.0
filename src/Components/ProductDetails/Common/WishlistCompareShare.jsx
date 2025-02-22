@@ -6,14 +6,22 @@ import useCreate from "@/Utils/Hooks/useCreate";
 import Cookies from "js-cookie";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RiHeartFill, RiHeartLine, RiRefreshLine, RiShareLine } from "react-icons/ri";
+import {
+  RiHeartFill,
+  RiHeartLine,
+  RiRefreshLine,
+  RiShareLine,
+} from "react-icons/ri";
 import ShareModal from "./ShareModal";
 import CompareContext from "@/Context/CompareContext";
+import { GoCreditCard } from "react-icons/go";
 
 const WishlistCompareShare = ({ productState }) => {
   const { addToWishlist, removeWishlist } = useContext(WishlistContext);
   const [productWishlist, setProductWishlist] = useState("");
-  const [addToWishlistAudio, setAddToWishlistAudio] = useState(new Audio(audioFile));
+  const [addToWishlistAudio, setAddToWishlistAudio] = useState(
+    new Audio(audioFile)
+  );
   const { t } = useTranslation("common");
   const { setOpenAuthModal } = useContext(ThemeOptionContext);
   const [modal, setModal] = useState(false);
@@ -26,7 +34,10 @@ const WishlistCompareShare = ({ productState }) => {
         addToWishlistAudio.play();
         setProductWishlist((prev) => !prev);
       } else {
-        removeWishlist(productState?.product?.product_id, productState?.product?.id);
+        removeWishlist(
+          productState?.product?.product_id,
+          productState?.product?.id
+        );
         setProductWishlist((prev) => !prev);
       }
     } else {
@@ -38,9 +49,15 @@ const WishlistCompareShare = ({ productState }) => {
     setProductWishlist(productState?.product?.is_wishlist);
   }, [productState]);
 
-  const { mutate, refetch: compareFetch } = useCreate(CompareAPI, false, false, "Added to Compare List", () => {
-    refetch();
-  });
+  const { mutate, refetch: compareFetch } = useCreate(
+    CompareAPI,
+    false,
+    false,
+    "Added to Compare List",
+    () => {
+      refetch();
+    }
+  );
 
   const addToCompare = () => {
     if (!Cookies.get("uat")) {
@@ -58,17 +75,21 @@ const WishlistCompareShare = ({ productState }) => {
           <span>{t("AddToWishlist")}</span>
         </a>
         <a onClick={addToCompare}>
-          <RiRefreshLine />
-          <span>{t("AddToCompare")}</span>
+          <GoCreditCard />
+          <span>{t("Add To My Cards")}</span>
         </a>
-        {productState?.product?.social_share ? (
+        {productState?.product ? (
           <a onClick={() => setModal(true)}>
             <RiShareLine />
             <span>{t("Share")}</span>
           </a>
         ) : null}
       </div>
-      <ShareModal productState={productState} modal={modal} setModal={setModal} />
+      <ShareModal
+        productState={productState}
+        modal={modal}
+        setModal={setModal}
+      />
     </>
   );
 };

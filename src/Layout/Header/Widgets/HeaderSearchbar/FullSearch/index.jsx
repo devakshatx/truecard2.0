@@ -22,10 +22,31 @@ const FullSearch = () => {
   const [categorySearch, setCategorySearch] = useState(false);
   const [categoryCustomSearch, setCategoryCustomSearch] = useState("");
   const [categoryTc, setCategoryTc] = useState(null);
-  const { ref, isComponentVisible, setIsComponentVisible } = useOutsideDropdown();
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useOutsideDropdown();
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
   const router = useRouter();
-  const { data: categoryData, refetch, isLoading: categoryIsLoading } = useQuery(["CategoryAPIMinimalSearch"], () => request({ url: CategoryAPI, params: { status: 1, paginate: 4, search: categoryCustomSearch ? categoryCustomSearch : null } }), { enabled: false, refetchOnWindowFocus: false, select: (data) => data.data.data });
+  const {
+    data: categoryData,
+    refetch,
+    isLoading: categoryIsLoading,
+  } = useQuery(
+    ["CategoryAPIMinimalSearch"],
+    () =>
+      request({
+        url: CategoryAPI,
+        params: {
+          status: 1,
+          paginate: 4,
+          search: categoryCustomSearch ? categoryCustomSearch : null,
+        },
+      }),
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+      select: (data) => data.data.data,
+    }
+  );
 
   useEffect(() => {
     setSelectedItemIndex(null);
@@ -36,7 +57,9 @@ const FullSearch = () => {
   // Added debouncing
   useEffect(() => {
     if (categoryTc) clearTimeout(categoryTc);
-    setCategoryTc(setTimeout(() => setCategoryCustomSearch(categorySearch), 500));
+    setCategoryTc(
+      setTimeout(() => setCategoryCustomSearch(categorySearch), 500)
+    );
   }, [categorySearch]);
   // Getting users data on searching users
   useEffect(() => {
@@ -63,10 +86,12 @@ const FullSearch = () => {
   };
 
   useEffect(() => {
-    const search = searchList?.filter((item) => item.title.toLowerCase().includes(searchValue.toLowerCase()));
+    const search = searchList?.filter((item) =>
+      item.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
     setSearchArray(search);
   }, [searchValue]);
-  
+
   const handleEnterKey = () => {
     if (selectedItemIndex !== null) {
       const selectedItem = searchArr[selectedItemIndex];
@@ -76,15 +101,21 @@ const FullSearch = () => {
 
   const handleArrowKey = (direction) => {
     if (searchArr.length > 0) {
-      let newIndex = selectedItemIndex === null ? 0 : selectedItemIndex + direction;
+      let newIndex =
+        selectedItemIndex === null ? 0 : selectedItemIndex + direction;
       if (newIndex < 0) {
         newIndex = searchArr.length - 1;
       } else if (newIndex >= searchArr.length) {
         newIndex = 0;
       }
-      const selectedItemElement = document.getElementById(`searchItem_${newIndex}`);
+      const selectedItemElement = document.getElementById(
+        `searchItem_${newIndex}`
+      );
       if (selectedItemElement) {
-        selectedItemElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        selectedItemElement.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
       }
       setSearchValue(searchArr[newIndex]?.title);
       setSelectedItemIndex(newIndex);
@@ -100,7 +131,7 @@ const FullSearch = () => {
   };
 
   const [text] = useTypewriter({
-    words: ["Search with brand and category..."],
+    words: ["Search by credit card name, bank and category..."],
     deleteSpeed: 120,
     loop: 0,
   });
@@ -128,10 +159,25 @@ const FullSearch = () => {
         onChange={(e) => onChangeHandle(e.target.value)}
       />
 
-      <Btn color="transparent" type="button" onClick={onHandleSearch} name="nav-submit-button" className="btn-search">
+      <Btn
+        color="transparent"
+        type="button"
+        onClick={onHandleSearch}
+        name="nav-submit-button"
+        className="btn-search"
+      >
         <RiSearchLine />
       </Btn>
-      {isComponentVisible && <SearchDropDown selectedItemIndex={selectedItemIndex} searchArr={searchArr} categoryLoading={categoryIsLoading} ref={ref} categoryData={categoryData} searchValue={searchValue} />}
+      {isComponentVisible && (
+        <SearchDropDown
+          selectedItemIndex={selectedItemIndex}
+          searchArr={searchArr}
+          categoryLoading={categoryIsLoading}
+          ref={ref}
+          categoryData={categoryData}
+          searchValue={searchValue}
+        />
+      )}
     </form>
   );
 };

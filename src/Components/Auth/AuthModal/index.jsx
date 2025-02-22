@@ -22,23 +22,14 @@ const AuthModal = () => {
   const [logOrNew, setLogOrNew] = useState(false);
   const path = usePathname();
   const isAuthenticated = Cookies.get("uat");
-  const { openAuthModal, setOpenAuthModal, themeOption } = useContext(ThemeOptionContext);
+  const { openAuthModal, setOpenAuthModal, themeOption } =
+    useContext(ThemeOptionContext);
   const router = useRouter();
 
   const handleClick = () => {
     setState(state == "login" ? "register" : "login");
     setLogOrNew(!logOrNew);
   };
-
-  const protectedRoutes = [`/account/dashboard`, `/account/notifications`, `/account/wallet`, `/account/bank-details`, `/account/point`, `/account/refund`, `/account/order`, `/account/addresses`, `/wishlist`, `/compare`];
-
-  // useEffect(() => {
-  //   if (protectedRoutes.includes(path) && !isAuthenticated) {
-  //     router.push('/')
-  //     ToastNotification("error", "Unauthenticated");
-  //     setOpenAuthModal(true);
-  //   }
-  // }, [path]);
 
   useEffect(() => {
     if (state == "forgot") {
@@ -55,7 +46,11 @@ const AuthModal = () => {
   }, [state]);
 
   return (
-    <Modal toggle={() => setOpenAuthModal(false)} className="auth-modal modal-dialog-centered d-block modal-xl fade show" isOpen={openAuthModal}>
+    <Modal
+      toggle={() => setOpenAuthModal(false)}
+      className="auth-modal modal-dialog-centered d-block modal-xl fade show"
+      isOpen={openAuthModal}
+    >
       <div className="modal-dialog ">
         <div className="modal-content">
           <ModalBody>
@@ -65,26 +60,45 @@ const AuthModal = () => {
                   <div>
                     <div className="auth-title">
                       <h3>{t(title)}</h3>
-                      <p>{state == "otp" ? t("OtpDescription") : state == "number" ? t("NumberLoginDescription") : t("AuthModalDescription")}</p>
+                      <p>
+                        {state == "otp"
+                          ? t("OtpDescription")
+                          : state == "number"
+                          ? t("NumberLoginDescription")
+                          : t("AuthModalDescription")}
+                      </p>
                     </div>
                     {state == "register" && <RegisterForm />}
                     {state == "login" && <LoginForm setState={setState} />}
-                    {state == "forgot" && <ForgotPasswordForm setState={setState} />}
-                    {state == "otp" && <OTPVerificationForm setState={setState} />}
-                    {state == "number" && <NumberLoginForm setState={setState} />}
+                    {state == "forgot" && (
+                      <ForgotPasswordForm setState={setState} />
+                    )}
+                    {state == "otp" && (
+                      <OTPVerificationForm setState={setState} />
+                    )}
+                    {state == "number" && (
+                      <NumberLoginForm setState={setState} />
+                    )}
                     {state !== "forgot" && state !== "otp" && (
                       <>
                         <div className="divider">
                           <span>{t("OR")}</span>
                         </div>
                         <p className="create">
-                          {state == "login" ? t("Don'thaveanaccount") : t("Alreadyhaveanaccount")} ?{" "}
+                          {state == "login"
+                            ? t("Don'thaveanaccount")
+                            : t("Alreadyhaveanaccount")}{" "}
+                          ?{" "}
                           <a href={Href} onClick={handleClick}>
                             {logOrNew ? t("Login") : t("Register")} {t("Here")}
                           </a>
                         </p>
                         {state == "login" && (
-                          <Btn color="transparent" className="number-btn" onClick={() => setState("number")}>
+                          <Btn
+                            color="transparent"
+                            className="number-btn"
+                            onClick={() => setState("number")}
+                          >
                             <RiSmartphoneLine />
                             {t("LoginWithNumber")}
                           </Btn>
@@ -94,7 +108,16 @@ const AuthModal = () => {
                   </div>
                 </div>
                 <div className="left-img w-lg-50 d-lg-block d-none">
-                  <Image height={1920} width={1920} src={themeOption?.popup?.auth?.image_url ? storageURL + themeOption?.popup?.auth?.image_url : ` ${ImagePath}/placeholder/auth.png`} alt="login" />
+                  <Image
+                    height={1920}
+                    width={1920}
+                    src={
+                      themeOption?.popup?.auth?.image_url
+                        ? storageURL + themeOption?.popup?.auth?.image_url
+                        : ` ${ImagePath}/placeholder/auth.png`
+                    }
+                    alt="login"
+                  />
                 </div>
               </div>
             </div>

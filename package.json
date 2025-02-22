@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare" : "eval \"$(fnm env --use-on-cd --shell bash)\" && fnm use 22"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.29.15",

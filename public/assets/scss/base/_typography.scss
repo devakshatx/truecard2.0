@@ -18,7 +18,8 @@ body {
     }
 
     &.single-product {
-        background-color: rgba(10, 10, 22, 1);
+        background-color: $grey-lighter ;
+        // $bgcolor
     }
 }
 

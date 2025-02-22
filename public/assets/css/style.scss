@@ -1,5 +1,5 @@
 .theme-color-1 {
-    --theme-color: #ff4c3b
+   --theme-color: #1d1d1d
 }
 
 .theme-color-2 {
@@ -136,7 +136,7 @@
 }
 
 :root {
-    --theme-color: #ff4c3b
+    --theme-color: #00ff66
 }
 
 @-webkit-keyframes textNoise1 {
@@ -1524,10 +1524,10 @@ button {
 
 .btn-solid {
     padding: 13px 29px;
-    color: #fff;
+    color: $fontcolor;
     letter-spacing: 0.05em;
-    border: 2px solid var(--theme-color);
-    background-image: linear-gradient(30deg, var(--theme-color) 50%, transparent 50%);
+    border: 2px solid $bgcolor;
+    background-image: linear-gradient(30deg, $bgcolor 50%, transparent 50%);
     background-size: 850px;
     background-repeat: no-repeat;
     background-position: 0;
@@ -1541,7 +1541,7 @@ button {
     background-color: #fff
 }
 
-.btn-solid.black-btn {
+.btn-solid.btn-black {
     background-image: linear-gradient(30deg, #222 50%, transparent 50%);
     border: 2px solid #222
 }
@@ -4426,10 +4426,10 @@ button.btn.btn-outline:active {
 }
 
 .category-block .category-image {
+    color: $black;
     margin: 0 auto;
     text-align: center;
     border: 1px solid #ddd;
-    border-radius: 100%;
     width: 80px;
     height: 80px;
     display: -webkit-box;
@@ -8491,7 +8491,7 @@ footer.footer-black .upside .small-section .center-thing .subscribe h4 {
     color: black
 }
 
-footer.footer-black .upside .small-section .center-thing .black-btn {
+footer.footer-black .upside .small-section .center-thing .btn-black {
     background-image: linear-gradient(30deg, #23292c 50%, transparent 50%);
     border: 2px solid #23292c
 }

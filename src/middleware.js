@@ -13,8 +13,8 @@ export async function middleware(request) {
     method: "GET",
     headers: myHeaders,
   };
-  let settingData = await (await fetch(process.env.API_PROD_URL + "/settings", requestOptions))?.json();
-  const protectedRoutes = [`/account/dashboard`, `/account/notification`, `/account/wallet`, `/account/bank-details`, `/account/bank-details`, `/account/point`, `/account/refund`, `/account/order`, `/account/addresses`, `/wishlist`, `/compare`];
+  let settingData = await (await fetch(process.env.NEW_API_PROD_URL + "/settings", requestOptions))?.json();
+  const protectedRoutes = [`/account/dashboard`, `/account/notification`, `/account/wallet`, `/account/bank-details`, `/account/bank-details`, `/account/point`, `/account/refund`, `/account/order`, `/account/addresses`, `/wishlist`,];
 
   const path = request.nextUrl.pathname;
   if (request.cookies.has("maintenance") && path !== `/maintenance`) {
@@ -25,10 +25,10 @@ export async function middleware(request) {
       headers: myHeaders,
     };
     // let data = await (
-    //   await fetch(process.env.API_PROD_URL + "/settings", requestOptions)
+    //   await fetch(process.env.API_PROD_URL + "/NEW_API_PROD_URL", requestOptions)
     // )?.json();
 
-    let response = await fetch(process.env.API_PROD_URL + "/settings", requestOptions);
+    let response = await fetch(process.env.API_PROD_URL + "/NEW_API_PROD_URL", requestOptions);
     if (!response.ok) {
       throw new Error(`Fetch failed with status ${response.status}`);
     }
@@ -60,25 +60,6 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL(`/`, request.url));
   }
 
-  // const protectedRoutes = [
-  //   `/account/dashboard`,
-  //   `/account/notification`,
-  //   `/account/wallet`,
-  //   `/account/bank-details`,
-  //   `/account/bank-details`,
-  //   `/account/point`,
-  //   `/account/refund`,
-  //   `/account/order`,
-  //   `/account/addresses`,
-  //   `/wishlist`,
-  //   `/compare`,
-  // ];
-
-  // if (protectedRoutes.includes(path) && !request.cookies.has("uat")) {
-  //   return NextResponse.redirect(new URL(`/auth/login`, request.url));
-  // }else{
-
-  // }
 
   if (path == `/checkout` && !request.cookies.has("uat")) {
     if (settingData?.values?.activation?.guest_checkout) {

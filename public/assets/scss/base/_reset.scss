@@ -285,6 +285,7 @@ a:not([href]):not([class]) {
   background: linear-gradient(to right, var(--theme-color) 0%, var(--theme-color2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-size: inherit;
 }
 
 @media (min-width: 1572px) {

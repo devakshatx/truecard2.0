@@ -13,9 +13,19 @@ import { Media } from "reactstrap";
 
 const CompareSidebar = () => {
   const { t } = useTranslation("common");
-  const { compareState, setCompareState, refetch, setOpenCompareSidebar, openCompareSidebar } = useContext(CompareContext);
+  const {
+    compareState,
+    setCompareState,
+    refetch,
+    setOpenCompareSidebar,
+    openCompareSidebar,
+  } = useContext(CompareContext);
   const { convertCurrency } = useContext(SettingContext);
-  const { data, mutate: compareMutate, isLoading: compareLoading } = useDelete(CompareAPI, `/compare`);
+  const {
+    data,
+    mutate: compareMutate,
+    isLoading: compareLoading,
+  } = useDelete(CompareAPI, `/compare`);
   useEffect(() => {
     if (data?.status == 200 || data?.status == 201) {
       refetch();
@@ -24,11 +34,15 @@ const CompareSidebar = () => {
   const router = useRouter();
   const removeFromCompare = (productObj) => {
     compareMutate(productObj.id);
-    setCompareState((prevState) => prevState.filter((elem) => elem.id !== productObj?.id));
+    setCompareState((prevState) =>
+      prevState.filter((elem) => elem.id !== productObj?.id)
+    );
   };
-
+  console.log("compare", compareState);
   return (
-    <div className={`add_to_cart right ${openCompareSidebar ? "open-side" : ""}`}>
+    <div
+      className={`add_to_cart right ${openCompareSidebar ? "open-side" : ""}`}
+    >
       <a href={Href} className="overlay"></a>
       <div className="cart-inner">
         <div className="cart_top">
@@ -49,7 +63,12 @@ const CompareSidebar = () => {
                 <li key={i}>
                   <Media>
                     <Link href={`/product/${item?.slug}`}>
-                      <Image src={item?.product_thumbnail?.original_url} height={90} width={90} alt="product-image" />
+                      <Image
+                        src={item?.product_thumbnail?.original_url}
+                        height={90}
+                        width={90}
+                        alt="product-image"
+                      />
                     </Link>
                     <Media body>
                       <a href={Href}>
@@ -80,7 +99,11 @@ const CompareSidebar = () => {
             <ul className="cart_total">
               <li>
                 <div className="buttons">
-                  <Btn onClick={() => router.push("/compare")} size="xl" className="btn-solid view-cart">
+                  <Btn
+                    onClick={() => router.push("/compare")}
+                    size="xl"
+                    className="btn-solid view-cart"
+                  >
                     {t("Compare")}
                   </Btn>
                 </div>

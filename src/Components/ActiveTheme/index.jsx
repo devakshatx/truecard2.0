@@ -59,7 +59,15 @@ import ThemeOptionContext from "@/Context/ThemeOptionsContext";
 import Loader from "@/Layout/Loader";
 
 const ActiveTheme = () => {
-  const { data, isLoading } = useQuery([ThemeAPI], () => request({ url: ThemeAPI }), { enabled: true, refetchOnWindowFocus: false, select: (res) => res?.data.data });
+  const { data, isLoading } = useQuery(
+    [ThemeAPI],
+    () => request({ url: ThemeAPI }),
+    {
+      enabled: true,
+      refetchOnWindowFocus: false,
+      select: (res) => res?.data.data,
+    }
+  );
   const search = useSearchParams();
   const themeBySlug = search.get("theme");
   const activeTheme = data?.find((elem) => elem.status === 1);
@@ -120,7 +128,9 @@ const ActiveTheme = () => {
   };
 
   if (themeLoading) return <Loader />;
-  return themeBySlug ? checkActive[themeBySlug] : checkActive[activeTheme?.slug];
+  return themeBySlug
+    ? checkActive[themeBySlug]
+    : checkActive["digital_download"];
 };
 
 export default ActiveTheme;

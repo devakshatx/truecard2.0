@@ -15,23 +15,50 @@ import { Col, Container, Modal, ModalBody, Row } from "reactstrap";
 import HomeBrand from "../Widgets/HomeBrand";
 import HomeProduct from "../Widgets/HomeProduct";
 import HomeSocialMedia from "../Widgets/HomeSocialMedia";
-import TitleBox from "../Widgets/HomeTitle";
+import HomeTitle from "../Widgets/HomeTitle";
+import HomeCategorySidebar from "../Widgets/HomeCategorySidebar";
+import HeaderSearchbar from "@/Layout/Header/Widgets/HeaderSearchbar";
+import { TbMoodHappy } from "react-icons/tb";
+import { FaCalculator, FaExchangeAlt } from "react-icons/fa";
+
+const filteredServices = [
+  {
+    title: "Quick & Clear Summaries",
+    description: "No complicated terms, just essential credit card insights.",
+    icon: <TbMoodHappy size={32} />,
+  },
+  {
+    title: "Side-by-Side Comparisons",
+    description: "Easily compare multiple credit cards in just minutes.",
+    icon: <FaExchangeAlt size={32} />,
+  },
+  {
+    title: "Smart Spend Planning",
+    description: "Optimize rewards and maximize your credit card benefits.",
+    icon: <FaCalculator size={32} />,
+  },
+];
 
 const SingleProduct = ({ slug }) => {
-  const { data, isLoading, refetch } = useCustomDataQuery({ params: "single_product" });
+  const { data, isLoading, refetch } = useCustomDataQuery({
+    params: "single_product",
+  });
   const [prodId, setProdId] = useState([]);
   const [banners, setBanners] = useState([]);
-  const { setGetBrandIds, isLoading: brandLoading } = useContext(BrandIdsContext);
-  const { setGetProductIds, isRefetching: productLoad } = useContext(ProductIdsContext);
+  const { setGetBrandIds, isLoading: brandLoading } =
+    useContext(BrandIdsContext);
+  const { setGetProductIds, isRefetching: productLoad } =
+    useContext(ProductIdsContext);
   const { isLoading: blogLoading } = useContext(BlogIdsContext);
   const [openModal, setOpenModal] = useState(false);
-  const [filteredServices, setFilteredServices] = useState([]);
 
   const getText = (value) => {
     const text = value.split(" ");
     const firstWord = text.slice(0, 3).join(" ");
     const remainingWord = text.slice(3).join(" ");
-    return { __html: `<h1>${firstWord} <span class="gradient-text">${remainingWord}</span></h1>` };
+    return {
+      __html: `<h1>${firstWord} <span class="gradient-text">${remainingWord}</span></h1>`,
+    };
   };
   useEffect(() => {
     isLoading && refetch();
@@ -39,23 +66,32 @@ const SingleProduct = ({ slug }) => {
 
   useEffect(() => {
     if (data?.products_ids?.length > 0) {
-      setGetProductIds({ ids: Array.from(new Set(data?.products_ids))?.join(",") });
+      setGetProductIds({
+        ids: Array.from(new Set(data?.products_ids))?.join(","),
+      });
     }
     if (data?.brands?.brand_ids?.length > 0) {
-      setGetBrandIds({ ids: Array.from(new Set(data?.brands?.brand_ids))?.join(",") });
+      setGetBrandIds({
+        ids: Array.from(new Set(data?.brands?.brand_ids))?.join(","),
+      });
     }
     if (data?.testimonial?.banners.length) {
       let banners = data?.testimonial?.banners?.filter((item) => item?.status);
       setBanners(banners);
     }
     if (data?.testimonial?.banners.length) {
-      let services = data?.services?.right_panel?.banners?.filter((item) => item?.status);
-      setFilteredServices(services);
+      let services = data?.services?.right_panel?.banners?.filter(
+        (item) => item?.status
+      );
     }
 
     if (data?.single_product?.product_ids) {
       const productId = data?.single_product?.product_ids;
-      const singleProductIds = Array.isArray(productId) ? productId : productId !== undefined ? [productId] : [];
+      const singleProductIds = Array.isArray(productId)
+        ? productId
+        : productId !== undefined
+        ? [productId]
+        : [];
       setProdId(singleProductIds);
     }
   }, [data]);
@@ -70,33 +106,74 @@ const SingleProduct = ({ slug }) => {
   useSkeletonLoader2([productLoad, blogLoading, brandLoading]);
   if (isLoading && document.body) return <Loader />;
 
+  console.log("data?.products_list", data?.products_list);
   return (
-    <div style={{ backgroundImage: `url(${ImagePath}/single-product/bg.jpg)` }}>
+    <div>
       {/* Home Banner  */}
       {data?.home_banner?.status && (
         <section className="p-0 height-85 single-home bg-size">
           <Container>
             <div className="home-content">
-              <div dangerouslySetInnerHTML={getText(data?.home_banner?.title || "")}></div>
-              <p>{data?.home_banner?.description}</p>
+              <h1>
+                Find the Right
+                <br />
+                <span class="gradient-text">credit card for you</span>
+              </h1>
+              <p>{"Are you looking for a credit card that fits your needs?"}</p>
 
-              {data?.home_banner?.show_button && <Btn className="gradient-btn">{data?.home_banner?.button_text}</Btn>}
+              <HeaderSearchbar fullSearch={true} />
+              {data?.home_banner?.show_button && (
+                <Btn className="gradient-btn">
+                  {data?.home_banner?.button_text}
+                </Btn>
+              )}
             </div>
             <div className="home-img d-md-flex d-none">
-              <img src={storageURL + data?.home_banner?.banner_image} className="img-fluid" alt="" />
+              <img
+                src={storageURL + data?.home_banner?.banner_image}
+                className="img-fluid"
+                alt=""
+              />
             </div>
           </Container>
         </section>
       )}
+      {/* Shopy by catergory  */}
+
+      <WrapperComponent
+        classes={{ sectionClass: "", fluidClass: "container" }}
+        noRowCol={true}
+      >
+        <HomeTitle
+          title={{ title: "Top Credit Card Categories" }}
+          type="standard"
+        />
+        <HomeCategorySidebar style={"simple"} />
+      </WrapperComponent>
 
       {/* About Us  */}
       {data?.services?.status && (
-        <WrapperComponent classes={{ sectionClass: "single-about-us", fluidClass: "container", row: "g-3" }} customCol={true}>
+        <WrapperComponent
+          classes={{
+            sectionClass: "single-about-us",
+            fluidClass: "container",
+            row: "g-3",
+          }}
+          customCol={true}
+        >
           {data?.services?.left_panel?.status && (
             <Col lg="6">
               <div className="about-left-box">
-                <h2>{data?.services?.left_panel?.title}</h2>
-                <h4>{data?.services?.left_panel?.description}</h4>
+                <h2>How TrueCards.in Helps You?</h2>
+                <h4>
+                  We simplify credit card selection with{" "}
+                  <b>
+                    quick summaries, easy comparisons, and a Spend & Reward
+                    Calculator
+                  </b>
+                  —helping you choose the best card and maximize rewards
+                  effortlessly.
+                </h4>
               </div>
             </Col>
           )}
@@ -107,7 +184,12 @@ const SingleProduct = ({ slug }) => {
                 {filteredServices?.map((service, i) => (
                   <li className="right-box" key={i}>
                     <div className="about-img">
-                      <img src={storageURL + service.image_url} className="img-fluid" alt="" />
+                      {service.icon}
+                      {/* <img
+                        src={storageURL + service.image_url}
+                        className="img-fluid"
+                        alt=""
+                      /> */}
                     </div>
                     <div className="about-content">
                       <h4>{service.title}</h4>
@@ -122,17 +204,39 @@ const SingleProduct = ({ slug }) => {
       )}
 
       {/* Banners */}
-      <WrapperComponent classes={{ sectionClass: "single-banner-section", fluidClass: "container", row: "row g-sm-4 g-3" }} customCol={true}>
+      <WrapperComponent
+        classes={{
+          sectionClass: "single-banner-section",
+          fluidClass: "container",
+          row: "row g-sm-4 g-3",
+        }}
+        customCol={true}
+      >
         <Col md="6">
-          <ImageLink imgUrl={data?.grid_banner?.banner_1} classes="custom-border-radius" height={640} width={676} />
+          <ImageLink
+            imgUrl={data?.grid_banner?.banner_1}
+            classes="custom-border-radius"
+            height={640}
+            width={676}
+          />
         </Col>
         <Col md="6">
           <Row className=" g-sm-4 g-3">
             <Col xs="12">
-              <ImageLink imgUrl={data?.grid_banner?.banner_2} classes="custom-border-radius" height={366} width={676} />
+              <ImageLink
+                imgUrl={data?.grid_banner?.banner_2}
+                classes="custom-border-radius"
+                height={366}
+                width={676}
+              />
             </Col>
             <Col xs="12">
-              <ImageLink imgUrl={data?.grid_banner?.banner_3} classes="custom-border-radius mt-xl-2" height={366} width={676} />
+              <ImageLink
+                imgUrl={data?.grid_banner?.banner_3}
+                classes="custom-border-radius mt-xl-2"
+                height={366}
+                width={676}
+              />
             </Col>
           </Row>
         </Col>
@@ -141,10 +245,17 @@ const SingleProduct = ({ slug }) => {
       {/* Video Section */}
       {data?.product_video?.status && (
         <>
-          <WrapperComponent classes={{ sectionClass: "video-section", fluidClass: "container" }} colProps={{ md: "12" }}>
+          <WrapperComponent
+            classes={{ sectionClass: "video-section", fluidClass: "container" }}
+            colProps={{ md: "12" }}
+          >
             <a href={Href}>
               <div className="video-img custom-border-radius overflow-hidden">
-                <img src={storageURL + data?.product_video?.image} alt="" className="img-fluid" />
+                <img
+                  src={storageURL + data?.product_video?.image}
+                  alt=""
+                  className="img-fluid"
+                />
                 {data?.product_video?.video && (
                   <div className="play-btn" onClick={() => setOpenModal(true)}>
                     <span>
@@ -155,11 +266,20 @@ const SingleProduct = ({ slug }) => {
               </div>
             </a>
           </WrapperComponent>
-          <Modal centered size="lg" isOpen={openModal} fade toggle={() => setOpenModal(false)}>
+          <Modal
+            centered
+            size="lg"
+            isOpen={openModal}
+            fade
+            toggle={() => setOpenModal(false)}
+          >
             <div className="modal-content">
               <ModalBody>
                 <video autoplay="true" loop="true" className="w-100 h-100">
-                  <source type="video/mp4" src={storageURL + data?.product_video?.video} />
+                  <source
+                    type="video/mp4"
+                    src={storageURL + data?.product_video?.video}
+                  />
                 </video>
               </ModalBody>
             </div>
@@ -168,29 +288,47 @@ const SingleProduct = ({ slug }) => {
       )}
 
       {/* Deal Product Tab */}
-      <WrapperComponent classes={{ sectionClass: "deal-section", fluidClass: "container" }}>
-        <HomeProduct productIds={prodId} style="horizontal" product_box_style="single_product" />
+      <WrapperComponent
+        classes={{ sectionClass: "deal-section", fluidClass: "container" }}
+      >
+        <HomeProduct
+          productIds={prodId}
+          style="horizontal"
+          product_box_style="single_product"
+        />
       </WrapperComponent>
 
       {data?.products_list?.status && data?.products_list?.product_ids && (
         <section className="deal-section">
           <div className="container">
-            <TitleBox title={data?.products_list} type="single_product" />
-            <HomeProduct productIds={data?.products_list?.product_ids || []} style="vertical" slider={true} sliderOptions={horizontalProductSlider} />
+            <HomeTitle title={data?.products_list} type="single_product" />
+            <HomeProduct
+              productIds={data?.products_list?.product_ids || []}
+              style="vertical"
+              slider={true}
+              sliderOptions={horizontalProductSlider}
+            />
           </div>
         </section>
       )}
 
       {/* Testimonial And Comments */}
       {data?.testimonial?.status && banners && banners.length && (
-        <WrapperComponent classes={{ sectionClass: "comment-section", fluidClass: "container" }} noRowCol={true}>
-          <TitleBox title={data?.testimonial} type="single_product" />
+        <WrapperComponent
+          classes={{ sectionClass: "comment-section", fluidClass: "container" }}
+          noRowCol={true}
+        >
+          <HomeTitle title={data?.testimonial} type="single_product" />
           <Row className=" comment-list-box g-4 justify-content-center">
             {banners?.map((testimonial, i) => (
               <Col xl="4" sm="6" key={i}>
                 <div className="comment-box">
                   <div className="profile-name">
-                    <img src={storageURL + testimonial.image_url} className="img-fluid" alt="" />
+                    <img
+                      src={storageURL + testimonial.image_url}
+                      className="img-fluid"
+                      alt=""
+                    />
                     <h4>{testimonial?.name}</h4>
                   </div>
                   <div className="profile-detail">
@@ -213,7 +351,10 @@ const SingleProduct = ({ slug }) => {
       {/* Brand */}
       {data?.brand?.status && (
         <section className="section-b-space blog-wo-bg">
-          <HomeBrand brandIds={data?.brand?.brand_ids || []} sliderOptions={brandSlider3} />
+          <HomeBrand
+            brandIds={data?.brand?.brand_ids || []}
+            sliderOptions={brandSlider3}
+          />
         </section>
       )}
     </div>

@@ -11,10 +11,12 @@ $font-nunito: Nunito;
 $font-serif: sans-serif;
 
 :root {
-    --theme-color: #ec8951;
+    --theme-color: #000;
 }
 
 //colors
+$bgcolor: #000;
+$fontcolor: #00ff66;
 $gray-90: #e5e5e5;
 $white: #ffffff;
 $white-dark: #eeeeee;

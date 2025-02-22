@@ -4235,6 +4235,22 @@
   }
 }
 
+.category_tags{
+  display: inline-block;
+
+}
+.category_tag{
+  display: inline-block;
+  margin-bottom: 6px;
+  margin-right: 8px;
+  font-weight: 400;
+  padding: 2px 10px;
+  font-size: 14px;
+  background: rgba(131, 100, 226, 0.1);
+  border-radius: 3px;
+  color: rgba(0, 0, 0, 0.5);
+
+}
 .rating {
   margin-top: 0;
   display: flex;
@@ -4245,10 +4261,10 @@
     font-size: calc(14px + 0.0025 * (100vw - 320px));
     margin-right: calc(0px + 0.00125 * (100vw - 320px));
     line-height: 1;
-    color: #ff9800;
+    color: $fontcolor;
 
     &.fill {
-      color: $star-yellow;
+      color: $fontcolor;
     }
   }
 
@@ -4394,10 +4410,10 @@
           cursor: pointer;
 
           &.active {
-            color: var(--theme-color);
+            color: $fontcolor;
             font-weight: 600;
-            background-color: rgb(236, 137, 81, 0.07);
-            border-color: rgba(236, 137, 81, 0.5882352941);
+            background-color: $bgcolor;
+            border-color : $bgcolor;
           }
         }
 
@@ -9269,7 +9285,7 @@
     font-weight: 600;
     text-transform: unset;
     letter-spacing: unset;
-    border: 1px solid var(--theme-color) !important;
+    border: 1px solid $black !important;
 
     svg {
       font-size: 20px !important;
